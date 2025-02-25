@@ -12,11 +12,36 @@ public class CharacterService {
             .build();
 
     public List<Character> findAllCharacters() {
-        CharacterResponse body = restClient.get()
+        CharacterResponse response = restClient.get()
                 .uri("/character")
                 .retrieve()
                 .body(CharacterResponse.class);
 
-        return body.results();
+        return response.results();
+    }
+
+    public List<Character> findCharactersByStatus(String status) {
+        CharacterResponse response = restClient.get()
+                .uri("/character?status=" + status)
+                .retrieve()
+                .body(CharacterResponse.class);
+
+        return response.results();
+    }
+
+    public Character findCharacterById(String id) {
+        return restClient.get()
+                .uri("/character/" + id)
+                .retrieve()
+                .body(Character.class);
+    }
+
+    public int getLivingSpeciesCount(String species) {
+        CharacterResponse response = restClient.get()
+                .uri("/character/?species=" + species)
+                .retrieve()
+                .body(CharacterResponse.class);
+
+        return response.info().count();
     }
 }
